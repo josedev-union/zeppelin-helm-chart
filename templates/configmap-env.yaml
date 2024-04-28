@@ -7,7 +7,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "zeppelin.fullname" . }}-server
+  name: {{ include "zeppelin.fullname" . }}-env
   labels:
     {{- include "zeppelin.labels" . | nindent 4 }}
 data:
