@@ -10,6 +10,11 @@ image:
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: 0.11.1
+  interpreter:
+    repository: zeppelin-interpreter
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: 0.11.1
   gateway:
     repository: nginx
     pullPolicy: IfNotPresent
