@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "zeppelin.fullname" . }}-server:{{ .Values.service.ports.http.servicePort }}']
+      args: ['{{ include "zeppelin.serviceName" . }}:{{ .Values.service.ports.http.servicePort }}']
   restartPolicy: Never

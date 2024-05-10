@@ -20,3 +20,4 @@ data:
   SPARK_MASTER: k8s://https://kubernetes.default.svc
   # default value of 'SPARK_HOME' property for spark interpreter.
   SPARK_HOME: /spark
+  ZEPPELIN_K8S_SERVER_RPC_SERVICE: {{ include "zeppelin.serviceName" . }}
