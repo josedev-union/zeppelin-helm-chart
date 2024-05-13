@@ -67,3 +67,6 @@ Create the name of the service to use
 {{- define "zeppelin.serviceName" -}}
 {{ include "zeppelin.fullname" . }}-server
 {{- end }}
+{{- define "zeppelin.headlessServiceName" -}}
+{{ include "zeppelin.fullname" . }}-server-headless
+{{- end }}

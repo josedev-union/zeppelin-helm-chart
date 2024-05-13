@@ -106,16 +106,14 @@ autoscaling:
 
 # Additional volumes on the output Deployment definition.
 volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+# - name: zeppelin-server-custom-k8s
+#   configMap:
+#     name: zeppelin-interpreter-spec
 
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+# - name: zeppelin-custom-k8s                # configure this to persist Zeppelin configuration
+#   mountPath: /opt/zeppelin/k8s/interpreter
 
 nodeSelector: {}
 

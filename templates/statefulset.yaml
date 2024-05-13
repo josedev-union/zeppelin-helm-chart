@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "zeppelin.fullname" . }}-server
   labels:
@@ -11,6 +11,7 @@ spec:
   selector:
     matchLabels:
       {{- include "zeppelin.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "zeppelin.headlessServiceName" . }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -71,6 +72,10 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: zeppelin-server-notebook-volume     # configure this to persist notebook
+              mountPath: /opt/zeppelin/notebook
+            - name: zeppelin-server-conf                # configure this to persist Zeppelin configuration
+              mountPath: /opt/zeppelin/conf
             {{- toYaml . | nindent 12 }}
           {{- end }}
         - name: zeppelin-server-gateway
@@ -112,7 +117,7 @@ spec:
       volumes:
         - name: nginx-conf
           configMap:
-            name: {{ include "zeppelin.fullname" . }}-conf
+            name: {{ include "zeppelin.fullname" . }}-gateway
             items:
             - key: nginx.conf
               path: nginx.conf
@@ -131,3 +136,18 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: zeppelin-server-notebook-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 4Gi
+    - metadata:
+        name: zeppelin-server-conf
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
