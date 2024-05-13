@@ -31,6 +31,15 @@ spec:
       serviceAccountName: {{ include "zeppelin.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: volume-mount-hack
+          image: busybox
+          command: ["sh", "-c", "chown -R 1000:1000 /opt/zeppelin"]
+          volumeMounts:
+            - name: zeppelin-server-notebook-volume
+              mountPath: /opt/zeppelin/notebook
+            - name: zeppelin-server-conf
+              mountPath: /opt/zeppelin/conf
       containers:
         - name: zeppelin-server
           image: "{{ .Values.image.server.repository }}:{{ .Values.image.server.tag | default .Chart.AppVersion }}"
@@ -72,9 +81,9 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
-            - name: zeppelin-server-notebook-volume     # configure this to persist notebook
+            - name: zeppelin-server-notebook-volume
               mountPath: /opt/zeppelin/notebook
-            - name: zeppelin-server-conf                # configure this to persist Zeppelin configuration
+            - name: zeppelin-server-conf
               mountPath: /opt/zeppelin/conf
             {{- toYaml . | nindent 12 }}
           {{- end }}
